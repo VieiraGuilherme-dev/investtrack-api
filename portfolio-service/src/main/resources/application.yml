@@ -5,7 +5,7 @@ spring:
   application:
     name: portfolio-service
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5433/portfolio_db
+    url: jdbc:postgresql://127.0.0.1:5434/portfolio_db
     username: postgres
     password: postgres
   jpa:
