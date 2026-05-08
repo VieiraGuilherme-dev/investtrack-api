@@ -19,6 +19,7 @@ public class PositionService {
 
     private final PositionRepository positionRepository;
     private final PortfolioRepository portfolioRepository;
+    private final PriceCacheService priceCacheService;
 
     public PositionResponse addOrUpdate(String portfolioId, String userId,
                                         String ticker, BigDecimal quantity,
@@ -38,13 +39,13 @@ public class PositionService {
                         .build());
 
         position = positionRepository.save(position);
-        return toResponse(position, price);
+        return toResponse(position, priceCacheService.getPriceOrFallback(ticker, price));
     }
 
     public List<PositionResponse> findByPortfolio(String portfolioId) {
         return positionRepository.findByPortfolioId(portfolioId)
                 .stream()
-                .map(p -> toResponse(p, p.getAveragePrice()))
+                .map(p -> toResponse(p, priceCacheService.getPriceOrFallback(p.getTicker(), p.getAveragePrice())))
                 .collect(Collectors.toList());
     }
 
