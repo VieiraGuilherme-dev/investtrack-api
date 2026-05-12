@@ -8,6 +8,7 @@ import com.investment.portfolioService.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,4 +65,5 @@ public class PortfolioService {
                 .createdAt(portfolio.getCreatedAt())
                 .build();
     }
+
 }
