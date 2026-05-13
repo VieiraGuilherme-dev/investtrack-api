@@ -36,6 +36,17 @@ public class PositionController {
         return ResponseEntity.ok(positionService.findByPortfolio(portfolioId));
     }
 
+    @PatchMapping("/{ticker}/reduce")
+    public ResponseEntity<PositionResponse> reduce(
+            @PathVariable String portfolioId,
+            @PathVariable String ticker,
+            @RequestParam BigDecimal quantity,
+            Authentication auth) {
+        return ResponseEntity.ok(
+                positionService.reduceQuantity(portfolioId, ticker, quantity)
+        );
+    }
+
     @DeleteMapping("/{ticker}")
     public ResponseEntity<Void> delete(
             @PathVariable String portfolioId,

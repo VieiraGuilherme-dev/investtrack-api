@@ -60,6 +60,26 @@ public class PositionService {
         positionRepository.delete(position);
     }
 
+    public PositionResponse reduceQuantity(String portfolioId, String ticker, BigDecimal quantity) {
+
+        Position position = positionRepository
+                .findByPortfolioIdAndTicker(portfolioId, ticker)
+                .orElseThrow(() -> new RuntimeException("Posição não encontrada"));
+
+        BigDecimal newQuantity = position.getQuantity().subtract(quantity);
+
+        if (newQuantity.compareTo(BigDecimal.ZERO) <= 0) {
+            positionRepository.delete(position);
+            return toResponse(position, priceCacheService.getPriceOrFallback(
+                    position.getTicker(), position.getAveragePrice()));
+        }
+
+        position.setQuantity(newQuantity);
+        position = positionRepository.save(position);
+        return toResponse(position, priceCacheService.getPriceOrFallback(
+                position.getTicker(), position.getAveragePrice()));
+    }
+
     private Position updateAveragePrice(Position existing,
                                         BigDecimal newQty,
                                         BigDecimal newPrice) {
