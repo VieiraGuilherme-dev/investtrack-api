@@ -19,6 +19,13 @@ public interface PortfolioClient {
             @RequestParam("price") BigDecimal price
     );
 
+    @PatchMapping("/portfolios/{portfolioId}/positions/{ticker}/reduce")
+    void reducePosition(
+            @PathVariable("portfolioId") String portfolioId,
+            @PathVariable("ticker") String ticker,
+            @RequestParam("quantity") BigDecimal quantity
+    );
+
     @DeleteMapping("/portfolios/{portfolioId}/positions/{ticker}")
     void deletePosition(
             @PathVariable("portfolioId") String portfolioId,
